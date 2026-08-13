@@ -426,6 +426,9 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
   // Previous media size.
   late Size previousMediaSize;
 
+  // Scaffold key to control the Drawer.
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void didUpdateWidget(covariant ResponsiveScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -448,6 +451,11 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
         isMenuClosed = true;
       } else {
         isMenuClosed = false;
+        // Auto-close drawer when transitioning to desktop breakpoint to avoid
+        // showing both drawer and persistent sidebar menu simultaneously
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          scaffoldKey.currentState?.closeDrawer();
+        });
       }
     }
     if (widget.menuItemsEnabled != null) {
@@ -581,6 +589,7 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
         Expanded(
           child: FocusTraversalGroup(
             child: Scaffold(
+              key: scaffoldKey,
               appBar: AppBar(
                 title: widget.title,
                 actions: const <Widget>[AboutIconButton()],
@@ -607,13 +616,13 @@ class _ResponsiveScaffoldState extends State<ResponsiveScaffold> {
                     maxWidth: widget.menuWidth,
                     railWidth: widget.railWidth,
                     onSelect: (int index) {
-                      Navigator.of(context).pop();
+                      scaffoldKey.currentState?.closeDrawer();
                       widget.onSelect?.call(index);
                     },
                     // User pushed menu button in Drawer, close the Drawer and
                     // set menu state to not be closed, it will open as a rail.
                     onOperate: () {
-                      Navigator.of(context).pop();
+                      scaffoldKey.currentState?.closeDrawer();
                       // If we do this, we can wait to complete the closing
                       // drawer animation, before we trigger animating the
                       // rail visible:
@@ -912,15 +921,8 @@ class _MenuItem extends StatelessWidget {
                     onTap: enabled ? onTap : null,
                     child: Row(
                       children: <Widget>[
-                        Tooltip(
-                          // Show tooltips only at rail size and if enabled.
-                          // Setting message to empty never shows tooltip.
-                          message: width == railWidth && enabled ? tooltip : '',
-                          // Just to get the tooltip outside the rail.
-                          margin: const EdgeInsetsDirectional.only(start: 50),
-                          waitDuration: const Duration(milliseconds: 500),
-                          // Constrain icon to min of rail width.
-                          child: ConstrainedBox(
+                        Builder(builder: (BuildContext context) {
+                          final ConstrainedBox iconBox = ConstrainedBox(
                             constraints: BoxConstraints.tightFor(
                               width: railWidth,
                               height: railWidth,
@@ -931,8 +933,23 @@ class _MenuItem extends StatelessWidget {
                                     quarterTurns: turns,
                                     child: Icon(icon, color: iconColor),
                                   ),
-                          ),
-                        ),
+                          );
+                          // Show tooltips only at rail size and if enabled.
+                          if (width == railWidth && enabled) {
+                            return Tooltip(
+                              // Show tooltips only at rail size and if enabled.
+                              message: tooltip,
+                              // Just to get the tooltip outside the rail.
+                              margin:
+                                  const EdgeInsetsDirectional.only(start: 50),
+                              waitDuration: const Duration(milliseconds: 500),
+                              // Constrain icon to min of rail width.
+                              child: iconBox,
+                            );
+                          }
+
+                          return iconBox;
+                        }),
                         // Below width of 10dp we remove the label.
                         if (width < railWidth + 10)
                           const SizedBox.shrink()

@@ -17,7 +17,15 @@ on:
   push:
     branches: [none]
     paths-ignore:
-     - "**.md"
+      - "**.md"
+  pull_request:
+    branches: [none]
+    paths-ignore:
+      - "**.md"
+  release:
+    branches: [none]
+    types: [published]
+
 jobs:
   flutter_tests:
     name: "Analyze and test package, then build and deploy Playground only"
@@ -46,7 +54,6 @@ jobs:
         run: flutter clean && cd example && flutter clean
       - name: "Themes playground WEB WASM-GC release build"
         run: cd example && flutter build web --wasm --release -t lib/example5_themes_playground/main.dart
-        #run: cd example && flutter build web --wasm --release --no-strip-wasm -t lib/example5_themes_playground/main.dart
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0
         with:

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../../../shared/const/app.dart';
@@ -111,8 +113,8 @@ class _VerticalPanelViewState extends State<VerticalPanelView>
                 // item, we trigger a slight fade and zoom in effect.
                 scaleController.value = 0.9;
                 fadeController.value = 0.2;
-                scaleController.forward();
-                fadeController.forward();
+                unawaited(scaleController.forward());
+                unawaited(fadeController.forward());
               },
               isCompact: isCompact,
               isRight: widget.isRight,
@@ -162,8 +164,8 @@ class _VerticalPanelViewState extends State<VerticalPanelView>
                 // item, we trigger a slight fade and zoom in effect.
                 scaleController.value = 0.9;
                 fadeController.value = 0.2;
-                scaleController.forward();
-                fadeController.forward();
+                unawaited(scaleController.forward());
+                unawaited(fadeController.forward());
               },
               isCompact: isCompact,
               isRight: widget.isRight,

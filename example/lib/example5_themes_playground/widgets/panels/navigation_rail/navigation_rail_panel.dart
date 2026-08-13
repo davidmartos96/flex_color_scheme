@@ -22,7 +22,7 @@ class NavigationRailPanel extends StatelessWidget {
     path: 'rydmike/flex_color_scheme/issues/277',
   );
 
-  // TODO(rydmike): To be added when issue is created
+  // TODO(rydmike): To be added when Flutter issue for the above is created
   // static final Uri _railIssueFlutter = Uri(
   //   scheme: 'https',
   //   host: 'github.com',
@@ -105,10 +105,10 @@ class NavigationRailPanel extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   style: spanTextStyle,
-                  text: 'If you any other labType than none and show the '
+                  text: 'If you use any other labType than none and show the '
                       'NavigationRail in extended state, Flutter SDK will '
-                      'throw. This is a Flutter SDK limitation, not '
-                      'FlexColorScheme related, see ',
+                      'throw an exception. This is a Flutter SDK limitation, '
+                      'not FlexColorScheme related, see ',
                 ),
                 LinkTextSpan(
                   style: linkStyle,
@@ -237,7 +237,7 @@ class NavigationRailPanel extends StatelessWidget {
               valueDecimalPlaces: 0,
               valueDefaultLabel: controller.navigationRailSelectedLabelSize !=
                       null
-                  // ignore: lines_longer_than_80_chars
+                  // ignore: lines_longer_than_80_chars, string interpolation
                   ? '${(controller.navigationRailSelectedLabelSize ?? 12).toStringAsFixed(0)} pt'
                   : '12 pt',
               valueDefaultDisabledLabel: '12 pt',
@@ -275,7 +275,7 @@ class NavigationRailPanel extends StatelessWidget {
               valueDecimalPlaces: 0,
               valueDefaultLabel: controller.navigationRailSelectedIconSize !=
                       null
-                  // ignore: lines_longer_than_80_chars
+                  // ignore: lines_longer_than_80_chars, string interpolation
                   ? '${(controller.navigationRailSelectedIconSize ?? 24).toStringAsFixed(0)} dp'
                   : '24 dp',
               valueDefaultDisabledLabel: '24 dp',

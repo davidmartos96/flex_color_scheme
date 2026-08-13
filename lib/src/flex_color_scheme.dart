@@ -22,7 +22,7 @@ import 'flex_surface_mode.dart';
 import 'flex_text_theme_color.dart';
 import 'flex_theme_data_extensions.dart'; // For comment refs.
 
-// ignore_for_file: sort_constructors_first
+// ignore_for_file: sort_constructors_first, we prefer factories before props.
 
 /// Enum to select the used AppBarTheme style in [FlexColorScheme] (FCS)
 /// based themes when using its [FlexColorScheme.light] and
@@ -1266,7 +1266,7 @@ class FlexColorScheme with Diagnosticable {
   ///   [FlexSubThemes.floatingActionButtonTheme].
   /// * [IconButtonThemeData] for [IconButton] via
   ///   [FlexSubThemes.iconButtonTheme].
-  /// * [InputDecorationTheme] for [InputDecoration] via
+  /// * [InputDecorationThemeData] for [InputDecoration] via
   ///   [FlexSubThemes.inputDecorationTheme].
   /// * [MenuBarThemeData] for [MenuBar] via [FlexSubThemes.menuBarTheme].
   /// * [MenuButtonThemeData] for [SubmenuButton] and [MenuItemButton] via
@@ -2375,7 +2375,7 @@ class FlexColorScheme with Diagnosticable {
     ///   [FlexSubThemes.floatingActionButtonTheme].
     /// * [IconButtonThemeData] for [IconButton] via
     ///   [FlexSubThemes.iconButtonTheme].
-    /// * [InputDecorationTheme] for [InputDecoration] via
+    /// * [InputDecorationThemeData] for [InputDecoration] via
     ///   [FlexSubThemes.inputDecorationTheme].
     /// * [MenuBarThemeData] for [MenuBar] via [FlexSubThemes.menuBarTheme].
     /// * [MenuButtonThemeData] for [MenuButton] via
@@ -4546,7 +4546,7 @@ class FlexColorScheme with Diagnosticable {
     ///   [FlexSubThemes.floatingActionButtonTheme].
     /// * [IconButtonThemeData] for [IconButton] via
     ///   [FlexSubThemes.iconButtonTheme].
-    /// * [InputDecorationTheme] for [InputDecoration] via
+    /// * [InputDecorationThemeData] for [InputDecoration] via
     ///   [FlexSubThemes.inputDecorationTheme].
     /// * [MenuBarThemeData] for [MenuBar] via [FlexSubThemes.menuBarTheme].
     /// * [MenuButtonThemeData] for [MenuButton] via
@@ -6124,7 +6124,7 @@ class FlexColorScheme with Diagnosticable {
     } else {
       final ThemeData theme = Theme.of(context);
       final ColorScheme colorScheme = theme.colorScheme;
-      final AppBarTheme appBarTheme = AppBarTheme.of(context);
+      final AppBarThemeData appBarTheme = AppBarTheme.of(context);
       appBarColor = appBarTheme.backgroundColor ??
           (colorScheme.brightness == Brightness.dark
               ? colorScheme.surface
@@ -6353,7 +6353,7 @@ class FlexColorScheme with Diagnosticable {
   ///   actually get a default `BottomAppBarTheme()` all null theme made by
   ///   `FlexSubThemes.bottomAppBarTheme`.
   ///
-  /// * A predefined slightly opinionated [InputDecorationTheme] is used. It
+  /// * A predefined slightly opinionated [InputDecorationThemeData] is used. It
   ///   sets `filled` to `true` and fill color to color scheme primary color
   ///   with opacity `0.035` in light mode and opacity `0.06` in dark-mode.
   ///
@@ -6606,8 +6606,7 @@ class FlexColorScheme with Diagnosticable {
     // A little know thing Typography.material2021 factory also needs the used
     // M3 colorscheme for a correct style.
     Typography defaultTypography() {
-      // ignore: use_if_null_to_convert_nulls_to_bools
-      if (useSubThemes && subTheme.useMaterial3Typography == true) {
+      if (useSubThemes && (subTheme.useMaterial3Typography ?? false)) {
         return Typography.material2021(
             platform: effectivePlatform, colorScheme: colorScheme);
       }
@@ -7444,7 +7443,7 @@ class FlexColorScheme with Diagnosticable {
     // if opted in, otherwise use pre FCS v4 variant as before. This decoration
     // theme is also passed into the TimePickerTheme, and DropdownMenu so we
     // get the same style used on them too.
-    final InputDecorationTheme? effectiveInputDecorationTheme = useSubThemes
+    final InputDecorationThemeData? effectiveInputDecorationTheme = useSubThemes
         // FCS V4 and later component theme based input decorator use.
         ? FlexSubThemes.inputDecorationTheme(
             colorScheme: colorScheme,
@@ -7472,13 +7471,14 @@ class FlexColorScheme with Diagnosticable {
             useMaterial3: useMaterial3,
           )
         : useMaterial3
-            // In M3 if not using sub themes, use default InputDecorationTheme.
+            // In M3 if not using sub themes,
+            // use default InputDecorationThemeData.
             ? null
             // Default decorator in M2 is a bit opinionated, this is the legacy
             // FCS default one in all previous versions before version 4.0.0.
             // Kept for backwards defaults compatibility. Only used when not
             // using opinionated component sub-themes in M2 mode.
-            : InputDecorationTheme(
+            : InputDecorationThemeData(
                 filled: subTheme.inputDecoratorIsFilled ?? true,
                 fillColor: isDark
                     ? colorScheme.primary.withAlpha(0x0F) // 6%
@@ -7862,7 +7862,11 @@ class FlexColorScheme with Diagnosticable {
       // Card Theme.
       cardTheme: useSubThemes
           ? FlexSubThemes.cardTheme(
+              colorScheme: colorScheme,
+              backgroundSchemeColor: subTheme.cardBackgroundSchemeColor,
               radius: subTheme.cardRadius ?? platformRadius,
+              borderSchemeColor: subTheme.cardBorderSchemeColor,
+              borderWidth: subTheme.cardBorderWidth,
               elevation: subTheme.cardElevation,
               surfaceTintColor: removeTint ? Colors.transparent : null,
               useMaterial3: useMaterial3,
@@ -8006,6 +8010,7 @@ class FlexColorScheme with Diagnosticable {
               // Style match its InputDecoration to same as TextField.
               inputDecorationTheme: effectiveInputDecorationTheme,
               surfaceTintColor: removeTint ? Colors.transparent : null,
+              maximumSize: subTheme.dropdownMenuMaximumSize,
             )
           : null,
       //
@@ -8287,9 +8292,33 @@ class FlexColorScheme with Diagnosticable {
             )
           : null,
       //
-      // progressIndicatorTheme: NOT YET DEFINED BY FCS. USE: .copyWith
-      progressIndicatorTheme:
-          useSubThemes ? const ProgressIndicatorThemeData() : null,
+      // ProgressIndicator Theme
+      progressIndicatorTheme: useSubThemes
+          ? FlexSubThemes.progressIndicatorTheme(
+              colorScheme: colorScheme,
+              baseSchemeColor: subTheme.progressIndicatorBaseSchemeColor,
+              linearTrackSchemeColor:
+                  subTheme.progressIndicatorLinearTrackSchemeColor,
+              linearMinHeight: subTheme.progressIndicatorLinearMinHeight,
+              circularTrackSchemeColor:
+                  subTheme.progressIndicatorCircularTrackSchemeColor,
+              refreshBackgroundSchemeColor:
+                  subTheme.progressIndicatorRefreshBackgroundSchemeColor,
+              linearRadius: subTheme.progressIndicatorLinearRadius,
+              stopIndicatorSchemeColor:
+                  subTheme.progressIndicatorStopIndicatorSchemeColor,
+              stopIndicatorRadius:
+                  subTheme.progressIndicatorStopIndicatorRadius,
+              strokeWidth: subTheme.progressIndicatorStrokeWidth,
+              strokeAlign: subTheme.progressIndicatorStrokeAlign,
+              strokeCap: subTheme.progressIndicatorStrokeCap,
+              constraints: subTheme.progressIndicatorConstraints,
+              trackGap: subTheme.progressIndicatorTrackGap,
+              circularTrackPadding:
+                  subTheme.progressIndicatorCircularTrackPadding,
+              year2023: subTheme.progressIndicatorYear2023,
+            )
+          : null,
       //
       // Radio Theme.
       radioTheme: useSubThemes
@@ -8373,6 +8402,7 @@ class FlexColorScheme with Diagnosticable {
               showValueIndicator: subTheme.sliderShowValueIndicator,
               useTintedInteraction: subTheme.interactionEffects,
               useTintedDisable: subTheme.tintedDisabledControls,
+              useOldM3Design: subTheme.sliderYear2023,
               useMaterial3: useMaterial3,
             )
           : null,

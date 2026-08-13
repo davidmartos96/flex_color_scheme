@@ -2,6 +2,145 @@
 
 All changes to the **FlexColorScheme** (FCS) package are documented here.
 
+## 8.4.0
+
+**November 30, 2025**
+
+Requires at least Flutter 3.38.0, but prefer 3.38.1 or higher.
+
+### Package
+
+**NEW**
+* Add boolean `sliderYear2023` to `FlexSubThemesData` to be able to select between older M3 and newer current M3 slider styles. Defaults to older style as before to not break styles. Set `sliderYear2023` to value false, to use the current newer M3 style.
+* Add `progressIndicatorTheme` to `FlexSubThemes` to be able to theme `CircularProgressIndicator` and `LinearProgressIndicator` components.
+* To `FlexSubThemesData` added the properties:
+    - `progressIndicatorBaseSchemeColor` (SchemeColor)
+    - `progressIndicatorLinearTrackSchemeColor` SchemeColor()
+    - `progressIndicatorLinearMinHeight` (double)
+    - `progressIndicatorCircularTrackSchemeColor` (SchemeColor)
+    - `progressIndicatorRefreshBackgroundSchemeColor` (SchemeColor)
+    - `progressIndicatorLinearRadius` (double)
+    - `progressIndicatorStopIndicatorSchemeColor` (SchemeColor)
+    - `progressIndicatorStopIndicatorRadius` (double)
+    - `progressIndicatorStrokeWidth` (double)
+    - `progressIndicatorStrokeAlign` (double)
+    - `progressIndicatorTrackGap` (double)
+    - `progressIndicatorStrokeCap` (StrokeCap)
+    - `progressIndicatorConstraints` (BoxConstraints)
+    - `progressIndicatorCircularTrackPadding` (EdgeInsetsGeometry)
+    - `progressIndicatorYear2023` (bool)
+* To `FlexSubThemes` static function `cardTheme` added the parameters:
+    - `colorScheme` (ColorScheme)
+    - `backgroundSchemeColor` (SchemeColor)
+    - `borderSchemeColor` (SchemeColor)
+    - `borderWidth` (double)
+* To `FlexSubThemesData` added the properties:
+    - `cardBackgroundSchemeColor` (SchemeColor)
+    - `cardBorderSchemeColor` (SchemeColor)
+    - `cardBorderWidth` (double)    
+
+**CHANGE**
+* The enum `FlexSliderIndicatorType` got a new value `rounded`, to support selecting the newer M3 indicator style also in M2 and older M3 mode for Slider and RangeSlider.
+
+**CHORE**
+* Update lints to RydMike lint rules 2.6.0 and fix new linting issues.
+* Internal: Bump `flex_seed_scheme` dependency to `^4.0.0`.
+* Internal: Refactored all component themes in `FlexSubThemes` to be in their own files, to improve maintainability and reduce the size of `flex_sub_themes.dart` file. This also make it easier for LLMs to work on the component themes, as they now have smaller files to process.
+* Improve `FlexSubThemes` function and variable documentation. Add parameter docs to all component theme functions in the function header docs so they show up in API docs.
+
+### Themes Playground
+
+**NEW**
+* The **Slider** panel got a new switch control to select between older M3 and newer current M3 slider styles. It uses the new `FlexSubThemesData.sliderYear2023` property to do so.
+
+* Split the **Tooltip** and **Progress Indicator** panel into two separate panels.
+* The new **Progress Indicator** panel got theming controls for all supported new `FlexSubThemesData` progress indicator properties listed above. 
+
+* The **Card** panel got theming controls for `FlexSubThemesData` card properties `cardBackgroundSchemeColor`, `cardBorderSchemeColor`, `cardBorderWidth` and `cardElevation`.
+ 
+**CHANGE**
+* Visual improvements to the color picker dialog in the Themes Playground.
+
+**FIX**
+* Fixed deprecated `Radio` properties and used `RadioGroup` instead.
+
+
+
+## 8.3.1
+
+**October 24, 2025**
+
+Minor fixes and improvements to the Themes Playground app only.
+
+### Package
+
+No changes
+
+### Playground
+
+**CHORE**
+
+* Update build to use Flutter 3.35.7 stable.
+* Bump packages to latest versions.
+ 
+**CHANGE**
+ 
+* Switch from `device_frame_plus` back to using original author's `device_frame` package.
+* Add new simulated Android and iPhone devices in updated `device_frame` to the Themes Playground device frame selector.
+
+**FIX**
+
+* Fix [#298](https://github.com/rydmike/flex_color_scheme/issues/298) Auto-close drawer when switching to desktop layout.
+* Fix [#300](https://github.com/rydmike/flex_color_scheme/issues/300) ResponsiveScaffold: Tooltip widget causes exception when the rail menu animates to full menu width.
+
+## 8.3.0
+
+**August 15, 2025**
+
+This release of FlexColorScheme adds support for breaking changes in Flutter v3.35.0 and also requires at least this version.
+
+### Package
+
+**FIX**
+
+* Fix the in Flutter v3.35 broken API for `BottomAppBarTheme`, see [issue #283](https://github.com/rydmike/flex_color_scheme/issues/283)
+* Fix the Flutter v3.35 broken API for `AppBarTheme`, migrate to use new `AppBarThemeData`. For more information, see the discussion in [#PR285](https://github.com/rydmike/flex_color_scheme/pull/285)
+* Fix the Flutter v3.35 broken API for `InputDecorationTheme`, migrate to use new `InputDecorationThemeData`. For more information, see the discussion in [#PR285](https://github.com/rydmike/flex_color_scheme/pull/285)
+* Added a temporary workaround for the `DropdownMenu`'s width issue [#170970](https://github.com/flutter/flutter/issues/170970) so that the correct default width style for the `DropdownMenu` is retained. This issue affects Flutter 3.32.0 to at least Flutter 3.35.1. There is a fix PR in the master channel [#PR169438](https://github.com/flutter/flutter/pull/169438), but it has not landed in Flutter 3.35.1. See also FCS issue report [#286](https://github.com/rydmike/flex_color_scheme/issues/286). 
+
+**CHORE**
+
+* Updated tests to use the new `BottomAppBarThemeData` API.
+* Updated tests to use the new `AppBarThemeData` API.
+* Updated tests to use the new `InputDecorationThemeData` API.
+* The test for `FlexSubThemeData.sliderShowValueIndicator` was changed from in **Flutter 3.35** deprecated value `ShowValueIndicator.always` to `ShowValueIndicator.onDrag`, which is the new equivalent value in Flutter 3.35.
+* Bump packages to latest versions.
+
+**FEATURE**
+
+* **DropdownMenu**: Added theming properties for the `DropdownMenu`'s maximum size.
+  * `FlexSubThemesData` got the new property `dropdownMenuMaximumSize`.
+  * `FlexSubThemes.dropdownMenuTheme` got the new property `maximumSize`.
+  * Both of type `WidgetStateProperty<Size?>?`
+  * This was added to allow overriding the fix for the `DropdownMenu` width issue [#170970](https://github.com/flutter/flutter/issues/170970).
+  * The `FlexSubThemes.dropdownMenuTheme` property `maximumSize` temporarily default fallbacks to `const WidgetStatePropertyAll<Size>(Size.infinite)` if undefined. This results in the same default and correct style that Flutter had in 3.29.x and earlier versions. The default fallback will be removed in a future version of **FlexColorScheme** when the issue is fixed in Flutter SDK stable release.
+  * This property is not available in the **Themes Playground** app, you can only override it via FlexColorScheme APIs.
+
+
+### Playground
+
+**CHORE**
+
+* Change deprecated `Switch.activeColor` to `Switch.activeThumbColor` in `ColorNameValue`.
+* Use the new `RadioGroup` API in the Playground Theme Simulator in the Material-3 example app.
+* Update known issues info expands in the Playground with up-to-date information about known issues and limitations in Flutter SDK theming.
+* Bump packages to latest versions. 
+
+**FEATURE**
+
+* The slider indicator value selection got the new selections `ShowValueIndicator.onDrag` and `ShowValueIndicator.alwaysShow`, which are new values in Flutter 3.35. The old value `ShowValueIndicator.always` is deprecated in Flutter 3.35 and will be removed in a future version of Flutter SDK and the Playground app.
+* The Code generation and Export-Import to JSON features were separated into two different panels. This was done to improve the discoverability of the Export-import to JSON feature.
+ 
 ## 8.2.0
 
 **March 23, 2025**

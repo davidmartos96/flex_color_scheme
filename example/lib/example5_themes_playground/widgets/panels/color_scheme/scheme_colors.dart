@@ -58,16 +58,6 @@ class SchemeColors extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
     final bool isLight = theme.brightness == Brightness.light;
     final bool useMaterial3 = theme.useMaterial3;
-    // These color values are used if picking is cancelled to restore
-    // previous color selection.
-    final Color primary = colorScheme.primary;
-    final Color primaryContainer = colorScheme.primaryContainer;
-    final Color secondary = colorScheme.secondary;
-    final Color secondaryContainer = colorScheme.secondaryContainer;
-    final Color tertiary = colorScheme.tertiary;
-    final Color tertiaryContainer = colorScheme.tertiaryContainer;
-    final Color error = colorScheme.error;
-    final Color errorContainer = colorScheme.errorContainer;
 
     // Get effective tones and chroma setup
     final FlexTones tones = effectiveFlexTones(tc, context);
@@ -91,6 +81,17 @@ class SchemeColors extends StatelessWidget {
             ? FlexColor.lightErrorContainer(inputErrorColor)
             : FlexColor.darkErrorContainer(inputErrorColor));
     final Color inputOnErrorContainerColor = _onColor(inputErrorContainerColor);
+
+    // These color values are used if picking is cancelled to restore
+    // previous color selection.
+    final Color primary = inputColor.primary;
+    final Color primaryContainer = inputColor.primaryContainer;
+    final Color secondary = inputColor.secondary;
+    final Color secondaryContainer = inputColor.secondaryContainer;
+    final Color tertiary = inputColor.tertiary;
+    final Color tertiaryContainer = inputColor.tertiaryContainer;
+    final Color error = inputErrorColor;
+    final Color errorContainer = inputErrorContainerColor;
 
     // Grab the card border from the theme card shape
     ShapeBorder? border = theme.cardTheme.shape;
@@ -154,8 +155,7 @@ class SchemeColors extends StatelessWidget {
                       flex: 3,
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
-                          toneC.setHover(primary);
-
+                          toneC.setHover(colorScheme.primary);
                           toneC.setPalette(TonalPalettes.primary);
                         },
                         onExit: (PointerEvent details) {
@@ -163,9 +163,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: primary,
+                          color: colorScheme.primary,
                           child: ColorPickerInkWellDialog(
-                            color: primary,
+                            color: colorScheme.primary,
                             onChanged: (Color color) {
                               if (isLight) {
                                 swapLight
@@ -195,7 +195,7 @@ class SchemeColors extends StatelessWidget {
                             enabled: isCustomTheme,
                             child: ColorNameValue(
                               key: ValueKey<String>('cnv primary $primary'),
-                              color: primary,
+                              color: colorScheme.primary,
                               textColor: colorScheme.onPrimary,
                               label: 'primary',
                               showInputColor: showInputColor,
@@ -221,7 +221,6 @@ class SchemeColors extends StatelessWidget {
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
                           toneC.setHover(colorScheme.onPrimary);
-
                           toneC.setPalette(TonalPalettes.primary);
                         },
                         onExit: (PointerEvent details) {
@@ -265,7 +264,7 @@ class SchemeColors extends StatelessWidget {
                       flex: 3,
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
-                          toneC.setHover(primaryContainer);
+                          toneC.setHover(colorScheme.primaryContainer);
                           toneC.setPalette(TonalPalettes.primary);
                         },
                         onExit: (PointerEvent details) {
@@ -273,9 +272,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: primaryContainer,
+                          color: colorScheme.primaryContainer,
                           child: ColorPickerInkWellDialog(
-                            color: primaryContainer,
+                            color: colorScheme.primaryContainer,
                             onChanged: (Color color) {
                               if (isLight) {
                                 swapLight
@@ -309,8 +308,8 @@ class SchemeColors extends StatelessWidget {
                             enabled: isCustomTheme,
                             child: ColorNameValue(
                               key: ValueKey<String>('cnv primaryContainer '
-                                  '$primaryContainer'),
-                              color: primaryContainer,
+                                  '${colorScheme.primaryContainer}'),
+                              color: colorScheme.primaryContainer,
                               textColor: colorScheme.onPrimaryContainer,
                               label: 'primary\u200BContainer',
                               showInputColor: showInputColor,
@@ -341,7 +340,6 @@ class SchemeColors extends StatelessWidget {
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
                           toneC.setHover(colorScheme.onPrimaryContainer);
-
                           toneC.setPalette(TonalPalettes.primary);
                         },
                         onExit: (PointerEvent details) {
@@ -521,8 +519,7 @@ class SchemeColors extends StatelessWidget {
                       flex: 3,
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
-                          toneC.setHover(secondary);
-
+                          toneC.setHover(colorScheme.secondary);
                           toneC.setPalette(TonalPalettes.secondary);
                         },
                         onExit: (PointerEvent details) {
@@ -530,9 +527,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: secondary,
+                          color: colorScheme.secondary,
                           child: ColorPickerInkWellDialog(
-                            color: secondary,
+                            color: colorScheme.secondary,
                             onChanged: (Color color) {
                               if (isLight) {
                                 swapLight
@@ -561,8 +558,9 @@ class SchemeColors extends StatelessWidget {
                             },
                             enabled: isCustomTheme,
                             child: ColorNameValue(
-                              key: ValueKey<String>('cnv secondary $secondary'),
-                              color: secondary,
+                              key: ValueKey<String>(
+                                  'cnv secondary ${colorScheme.secondary}'),
+                              color: colorScheme.secondary,
                               textColor: colorScheme.onSecondary,
                               label: 'secondary',
                               showInputColor: showInputColor,
@@ -588,7 +586,6 @@ class SchemeColors extends StatelessWidget {
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
                           toneC.setHover(colorScheme.onSecondary);
-
                           toneC.setPalette(TonalPalettes.secondary);
                         },
                         onExit: (PointerEvent details) {
@@ -632,8 +629,7 @@ class SchemeColors extends StatelessWidget {
                       flex: 3,
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
-                          toneC.setHover(secondaryContainer);
-
+                          toneC.setHover(colorScheme.secondaryContainer);
                           toneC.setPalette(TonalPalettes.secondary);
                         },
                         onExit: (PointerEvent details) {
@@ -641,9 +637,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: secondaryContainer,
+                          color: colorScheme.secondaryContainer,
                           child: ColorPickerInkWellDialog(
-                            color: secondaryContainer,
+                            color: colorScheme.secondaryContainer,
                             onChanged: (Color color) {
                               if (isLight) {
                                 swapLight
@@ -678,8 +674,8 @@ class SchemeColors extends StatelessWidget {
                             enabled: isCustomTheme,
                             child: ColorNameValue(
                               key: ValueKey<String>('cnv secondaryContainer '
-                                  '$secondaryContainer'),
-                              color: secondaryContainer,
+                                  '${colorScheme.secondaryContainer}'),
+                              color: colorScheme.secondaryContainer,
                               textColor: colorScheme.onSecondaryContainer,
                               label: 'secondary\u200BContainer',
                               showInputColor: showInputColor,
@@ -710,7 +706,6 @@ class SchemeColors extends StatelessWidget {
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
                           toneC.setHover(colorScheme.onSecondaryContainer);
-
                           toneC.setPalette(TonalPalettes.secondary);
                         },
                         onExit: (PointerEvent details) {
@@ -723,7 +718,7 @@ class SchemeColors extends StatelessWidget {
                             key: ValueKey<String>('cnv onSecondaryContainer '
                                 '${colorScheme.onSecondaryContainer}'),
                             color: colorScheme.onSecondaryContainer,
-                            textColor: secondaryContainer,
+                            textColor: colorScheme.secondaryContainer,
                             label: 'onSecondary\u200BContainer',
                             tone: tones.onSecondaryContainerTone,
                             showTone: _locked(
@@ -892,7 +887,7 @@ class SchemeColors extends StatelessWidget {
                       flex: 3,
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
-                          toneC.setHover(tertiary);
+                          toneC.setHover(colorScheme.tertiary);
                           toneC.setPalette(TonalPalettes.tertiary);
                         },
                         onExit: (PointerEvent details) {
@@ -900,9 +895,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: tertiary,
+                          color: colorScheme.tertiary,
                           child: ColorPickerInkWellDialog(
-                            color: tertiary,
+                            color: colorScheme.tertiary,
                             onChanged: (Color color) {
                               if (isLight) {
                                 tc.setCustomTertiaryLight(color);
@@ -923,8 +918,9 @@ class SchemeColors extends StatelessWidget {
                             },
                             enabled: isCustomTheme,
                             child: ColorNameValue(
-                              key: ValueKey<String>('cnv tertiary $tertiary'),
-                              color: tertiary,
+                              key: ValueKey<String>(
+                                  'cnv tertiary ${colorScheme.tertiary}'),
+                              color: colorScheme.tertiary,
                               textColor: colorScheme.onTertiary,
                               label: 'tertiary',
                               showInputColor: showInputColor,
@@ -962,7 +958,7 @@ class SchemeColors extends StatelessWidget {
                             key: ValueKey<String>(
                                 'cnv onTertiary ${colorScheme.onTertiary}'),
                             color: colorScheme.onTertiary,
-                            textColor: tertiary,
+                            textColor: colorScheme.tertiary,
                             label: 'onTertiary',
                             tone: tones.onTertiaryTone,
                             showTone: _locked(isLight, !tc.keepTertiary,
@@ -993,7 +989,7 @@ class SchemeColors extends StatelessWidget {
                       flex: 3,
                       child: MouseRegion(
                         onEnter: (PointerEvent details) {
-                          toneC.setHover(tertiaryContainer);
+                          toneC.setHover(colorScheme.tertiaryContainer);
                           toneC.setPalette(TonalPalettes.tertiary);
                         },
                         onExit: (PointerEvent details) {
@@ -1001,9 +997,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: tertiaryContainer,
+                          color: colorScheme.tertiaryContainer,
                           child: ColorPickerInkWellDialog(
-                            color: tertiaryContainer,
+                            color: colorScheme.tertiaryContainer,
                             onChanged: (Color color) {
                               if (isLight) {
                                 tc.setCustomTertiaryContainerLight(color);
@@ -1027,8 +1023,8 @@ class SchemeColors extends StatelessWidget {
                             enabled: isCustomTheme,
                             child: ColorNameValue(
                               key: ValueKey<String>('cnv tertiaryContainer '
-                                  '$tertiaryContainer'),
-                              color: tertiaryContainer,
+                                  '${colorScheme.tertiaryContainer}'),
+                              color: colorScheme.tertiaryContainer,
                               textColor: colorScheme.onTertiaryContainer,
                               label: 'tertiary\u200BContainer',
                               showInputColor: showInputColor,
@@ -1071,7 +1067,7 @@ class SchemeColors extends StatelessWidget {
                             key: ValueKey<String>('cnv onTertiaryContainer '
                                 '${colorScheme.onTertiaryContainer}'),
                             color: colorScheme.onTertiaryContainer,
-                            textColor: tertiaryContainer,
+                            textColor: colorScheme.tertiaryContainer,
                             label: 'onTertiary\u200BContainer',
                             tone: tones.onTertiaryContainerTone,
                             showTone: _locked(
@@ -1248,9 +1244,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: error,
+                          color: colorScheme.error,
                           child: ColorPickerInkWellDialog(
-                            color: error,
+                            color: colorScheme.error,
                             onChanged: (Color color) {
                               if (isLight) {
                                 tc.setCustomErrorLight(color);
@@ -1271,7 +1267,8 @@ class SchemeColors extends StatelessWidget {
                             },
                             enabled: isCustomTheme,
                             child: ColorNameValue(
-                              key: ValueKey<String>('cnv error $error'),
+                              key: ValueKey<String>(
+                                  'cnv error ${colorScheme.error}'),
                               color: colorScheme.error,
                               textColor: colorScheme.onError,
                               label: 'error',
@@ -1348,9 +1345,9 @@ class SchemeColors extends StatelessWidget {
                           toneC.setPalette(null);
                         },
                         child: Material(
-                          color: errorContainer,
+                          color: colorScheme.errorContainer,
                           child: ColorPickerInkWellDialog(
-                            color: errorContainer,
+                            color: colorScheme.errorContainer,
                             onChanged: (Color color) {
                               if (isLight) {
                                 tc.setCustomErrorContainerLight(color);

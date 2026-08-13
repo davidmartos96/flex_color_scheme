@@ -183,8 +183,9 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
                     ),
               title: i == 0
                   // If first position use default label.
-                  ? Text(_popupItemLabel(null, useMaterial3, false),
-                      style: txtStyle)
+                  ? Text(defaultSelectionValuePopupLabel)
+                  // Text(_popupItemLabel(null, useMaterial3, false),
+                  //         style: txtStyle)
                   : Text(
                       _popupItemLabel(
                           enumFromIndex(i - 1), useMaterial3, false),
@@ -304,13 +305,15 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
     if (T == FlexSliderIndicatorType) {
       switch (value) {
         case FlexSliderIndicatorType.rectangular:
-          return 'Rectangle (rounded)';
+          return 'Rectangle';
         case FlexSliderIndicatorType.drop:
-          return 'Drop (inverted)';
+          return 'Pin drop';
+        case FlexSliderIndicatorType.rounded:
+          return 'Rounded';
         case null:
           {
             if (useMaterial3) {
-              return 'Default (drop)';
+              return 'Default  (pin drop)';
             } else {
               return 'Default (rectangle)';
             }
@@ -333,8 +336,13 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
           return 'Only for discrete';
         case ShowValueIndicator.onlyForContinuous:
           return 'Only for continuous';
+        // ignore: deprecated_member_use, allow using while still in SDK.
         case ShowValueIndicator.always:
-          return 'Show on all types';
+          return 'On all types (deprecated)';
+        case ShowValueIndicator.onDrag:
+          return 'When dragging';
+        case ShowValueIndicator.alwaysVisible:
+          return 'Always visible';
         case ShowValueIndicator.never:
           return 'Never show';
         case null:
@@ -450,6 +458,27 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
           return 'Default (no clip)';
       }
     }
+    if (T == StrokeCap) {
+      switch (value) {
+        case StrokeCap.butt:
+          return useLongLabel
+              ? 'Butt cap\n'
+                  'Flat end, no extension'
+              : 'Butt (flat end)';
+        case StrokeCap.round:
+          return useLongLabel
+              ? 'Round cap\n'
+                  'Rounded end, extends half stroke width'
+              : 'Round (rounded end)';
+        case StrokeCap.square:
+          return useLongLabel
+              ? 'Square cap\n'
+                  'Square end, extends half stroke width'
+              : 'Square (square end)';
+        case null:
+          return 'Default (butt)';
+      }
+    }
     if (T == AdaptiveResponse) {
       final AdaptiveResponse? castValue = value as AdaptiveResponse?;
       return castValue?.label ?? 'Default (${AdaptiveResponse.off.label})';
@@ -540,8 +569,12 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
           child: Icon(Icons.assistant),
         ),
         Tooltip(
-          message: 'Inverted water drop',
+          message: 'Pin drop indicator',
           child: Icon(Icons.pin_drop),
+        ),
+        Tooltip(
+          message: 'Rounded indicator',
+          child: Icon(Icons.home_max_outlined),
         ),
       ];
     }
@@ -581,7 +614,15 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
           child: Icon(Icons.horizontal_rule),
         ),
         Tooltip(
-          message: 'All',
+          message: 'All type (deprecated)',
+          child: Icon(Icons.done_outline),
+        ),
+        Tooltip(
+          message: 'When dragging',
+          child: Icon(Icons.drag_indicator),
+        ),
+        Tooltip(
+          message: 'Always visible',
           child: Icon(Icons.done_outline),
         ),
         Tooltip(
@@ -715,6 +756,26 @@ class EnumPopupMenu<T extends Enum> extends StatelessWidget {
         Tooltip(
           message: 'Clip with anti-aliasing and saveLayer',
           child: Icon(Icons.rounded_corner_outlined),
+        ),
+      ];
+    }
+    if (T == StrokeCap) {
+      return const <Widget>[
+        Tooltip(
+          message: 'Default (butt)',
+          child: Icon(Icons.texture_outlined),
+        ),
+        Tooltip(
+          message: 'Butt cap - flat end, no extension',
+          child: Icon(Icons.remove_outlined),
+        ),
+        Tooltip(
+          message: 'Round cap - rounded end, extends half stroke width',
+          child: Icon(Icons.radio_button_unchecked_outlined),
+        ),
+        Tooltip(
+          message: 'Square cap - square end, extends half stroke width',
+          child: Icon(Icons.crop_square_outlined),
         ),
       ];
     }

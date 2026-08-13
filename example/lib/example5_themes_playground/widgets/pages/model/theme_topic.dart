@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../theme/topic_theme.dart';
 
-// ignore_for_file: comment_references
-
 /// Used to groups [Topic]s into related groups.
 enum TopicGroup {
   general,
@@ -51,7 +49,7 @@ enum TopicGroup {
   }
 }
 
-/// A class to hold the heading data we need to display in our [Panel]
+/// A class to hold the heading data we need to display in our
 /// topic panels headers and selection buttons.
 @immutable
 class Topic {
@@ -146,6 +144,25 @@ const List<Topic> themeTopics = <Topic>[
         'a very elaborate Flutter ThemeData object, with a lot less setup '
         'needed. Some of its possible configurations would require over 2000 '
         'rows of code to reproduce with the vanilla ThemeData factory.\n',
+  ),
+  Topic(
+    group: TopicGroup.general,
+    heading: 'Export and Import Theme Settings',
+    buttonLabel: 'Export\nImport',
+    icon: Icons.data_object,
+    info: 'With this feature you can export '
+        'the current theme settings from the Themes Playground '
+        'app to a JSON string into the staging area below. '
+        'You can then paste this JSON string into a file and e.g. '
+        'keep the file in your project. The Themes Playground '
+        'settings can then be re-imported here if you need to '
+        "make design changes to your application's theme.\n"
+        '\n'
+        'You can also share your theme configuration with others via a '
+        'link. The link will open the Playground with your current theme '
+        'settings applied. You can the link to share your '
+        'theme settings with others, just to show it off or so they can '
+        'use it as a starting point for their own themes.\n',
   ),
   Topic(
     group: TopicGroup.components,
@@ -361,11 +378,18 @@ const List<Topic> themeTopics = <Topic>[
   ),
   Topic(
     group: TopicGroup.controls,
-    heading: 'Tooltip and Progress Indicators',
-    buttonLabel: 'Tooltip\nProgress',
+    heading: 'Tooltip',
+    buttonLabel: 'Tooltip',
     icon: Icons.live_help_outlined,
     info: 'Tooltips display informative text when users hover over, '
-        'focus on, or tap an element. Progress indicators inform users '
+        'focus on, or tap an element.\n',
+  ),
+  Topic(
+    group: TopicGroup.controls,
+    heading: 'Progress Indicator',
+    buttonLabel: 'Progress\nIndicator',
+    icon: Icons.update_outlined,
+    info: 'Progress indicators inform users '
         'about the status of ongoing processes, such as loading an app or '
         'submitting a form.\n',
   ),
@@ -610,9 +634,9 @@ const List<Topic> themeTopics = <Topic>[
     heading: 'Android System Navigation Bar',
     buttonLabel: 'Android\nSystem Nav',
     icon: Icons.android_outlined,
-    info: 'The system navigation bar in Android is in newer versions '
+    info: 'The system navigation bar in Android is in current Android versions '
         'a swipe bar at the bottom of the screen used for swipe '
-        'gestures. In older versions it is made up of the 3 system '
+        'gestures. In older Android versions it is made up of the 3 system '
         'navigation buttons. The system navigation area can be styled '
         'in Flutter, but not via themes.\n'
         '\n'
