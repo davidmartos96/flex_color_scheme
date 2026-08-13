@@ -102,6 +102,8 @@ dependencies:
   web: ^1.1.1
 
 # Add dependency_overrides:
+  material_ui: ^1.0.0
+  cupertino_ui: ^1.0.0
 dependency_overrides:
   flex_seed_scheme: 4.0.1
   #  path: ../../flex_seed_scheme

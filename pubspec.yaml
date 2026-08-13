@@ -34,13 +34,16 @@ topics:
   - materialdesign
 
 environment:
-  sdk: '>=3.13.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
   flutter: '>=3.47.0'
 
 dependencies:
   # FlexSeedScheme package, by Mike Rydstrom, rydmike.com (@rydmike).
   # https://pub.dev/packages/flex_seed_scheme
-  flex_seed_scheme: ^4.0.0
+  flex_seed_scheme:
+    git:
+      url: https://github.com/davidmartos96/flex_seed_scheme
+      ref: d3d3ad60cbb0bb1541d0a131bdc97270ba5ebe01
   #  path: ../flex_seed_scheme
 
   flutter:
@@ -53,6 +56,8 @@ dependencies:
   # import the package.
   meta: ^1.9.1
 
+  material_ui: any
+  cupertino_ui: any
 dev_dependencies:
   # Dart test coverage
   coverage: ^1.15.0
